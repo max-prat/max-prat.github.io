@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Max Pratueangsukpong</title>
+<meta name="description" content="Max (Narawit) Pratueangsukpong: MRes student at the University of Cambridge working where chemistry, machine learning and drug discovery meet.">
+<meta name="author" content="Narawit (Max) Pratueangsukpong">
+<link rel="canonical" href="https://max-prat.github.io/">
+<meta property="og:title" content="Max Pratueangsukpong">
+<meta property="og:description" content="MRes student at the University of Cambridge working where chemistry, machine learning and drug discovery meet.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://max-prat.github.io/">
+<meta name="theme-color" content="#ff7f2a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ff7f2a'/%3E%3Ctext x='32' y='45' font-family='Arial,Helvetica,sans-serif' font-size='36' font-weight='700' text-anchor='middle' fill='%231e1e1e'%3EM%3C/text%3E%3C/svg%3E">
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem("pref-theme");
+      if (saved === "dark" || saved === "light") document.documentElement.setAttribute("data-theme", saved);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  :root {
+    --gap: 24px;
+    --nav-width: 1024px;
+    --main-width: 720px;
+    --header-height: 60px;
+    --radius: 8px;
+
+    --theme: #ffffff;
+    --entry: #ffffff;
+    --primary: rgb(30, 30, 30);
+    --secondary: rgb(108, 108, 108);
+    --tertiary: rgb(214, 214, 214);
+    --content: rgb(31, 31, 31);
+    --border: rgb(238, 238, 238);
+
+    --accent: #ff7f2a;
+    --accent-hover: #ff9447;
+    --accent-soft: rgba(255, 127, 42, 0.13);
+    --accent-ink: #b84d00;
+    --on-accent: #1e1e1e;
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    --theme: rgb(29, 30, 32);
+    --entry: rgb(46, 46, 51);
+    --primary: rgb(218, 218, 219);
+    --secondary: rgb(155, 156, 157);
+    --tertiary: rgb(65, 66, 68);
+    --content: rgb(196, 196, 197);
+    --border: rgb(51, 51, 51);
+    --accent-soft: rgba(255, 127, 42, 0.17);
+    --accent-ink: #ff9a55;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --theme: rgb(29, 30, 32);
+      --entry: rgb(46, 46, 51);
+      --primary: rgb(218, 218, 219);
+      --secondary: rgb(155, 156, 157);
+      --tertiary: rgb(65, 66, 68);
+      --content: rgb(196, 196, 197);
+      --border: rgb(51, 51, 51);
+      --accent-soft: rgba(255, 127, 42, 0.17);
+      --accent-ink: #ff9a55;
+      color-scheme: dark;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    background: var(--theme);
+    color: var(--primary);
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  svg { display: block; }
+  h1, h2, h3, p, ul, ol, dl, dd { margin: 0; padding: 0; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  .skip {
+    position: absolute; left: -9999px; top: 10px; z-index: 100;
+    background: var(--accent); color: var(--on-accent);
+    padding: 8px 14px; border-radius: 6px; font-size: 15px; font-weight: 500;
+  }
+  .skip:focus { left: 12px; }
+
+  /* Header */
+  .header {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--theme);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .header.scrolled { border-bottom-color: var(--border); }
+  .nav {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    max-width: calc(var(--nav-width) + var(--gap) * 2);
+    min-height: var(--header-height);
+    margin: 0 auto; padding: 0 var(--gap);
+  }
+  .logo { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+  .logo-link { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  .theme-toggle {
+    display: inline-flex; padding: 6px; margin: 0; border: 0; border-radius: 6px;
+    background: none; color: var(--primary); cursor: pointer;
+  }
+  .theme-toggle:hover { color: var(--accent); }
+  .theme-toggle svg { width: 19px; height: 19px; }
+  .icon-sun { display: none; }
+  :root[data-theme="dark"] .icon-sun { display: block; }
+  :root[data-theme="dark"] .icon-moon { display: none; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .icon-sun { display: block; }
+    :root:not([data-theme="light"]) .icon-moon { display: none; }
+  }
+  .menu {
+    display: flex; gap: 22px; list-style: none;
+    overflow-x: auto; white-space: nowrap; scrollbar-width: none;
+  }
+  .menu::-webkit-scrollbar { display: none; }
+  .menu a {
+    display: inline-block; font-size: 16px; padding: 3px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .menu a:hover { border-bottom-color: var(--tertiary); }
+  .menu a.active { font-weight: 500; border-bottom-color: var(--accent); }
+
+  /* Main */
+  .main {
+    max-width: calc(var(--main-width) + var(--gap) * 2);
+    margin: 0 auto; padding: 0 var(--gap);
+  }
+
+  /* Welcome */
+  .home-info { padding: 56px 0 8px; }
+  .home-info h1 {
+    display: inline-block; position: relative;
+    font-size: 40px; line-height: 1.2; font-weight: 700; letter-spacing: -0.02em;
+    padding-bottom: 12px;
+  }
+  .home-info h1::after {
+    content: ""; position: absolute; left: 0; bottom: 0;
+    width: 56px; height: 5px; border-radius: 3px; background: var(--accent);
+  }
+  .home-content { margin-top: 20px; font-size: 17px; color: var(--content); }
+  .home-content p { margin-bottom: 14px; }
+  .home-content ul { list-style: none; display: grid; gap: 8px; }
+  .home-content li { position: relative; padding-left: 20px; }
+  .home-content li::before {
+    content: ""; position: absolute; left: 3px; top: 0.7em;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  }
+  .home-content strong { color: var(--primary); font-weight: 600; }
+  .social-icons { display: flex; flex-wrap: wrap; gap: 4px; margin: 22px 0 0 -8px; }
+  .social-icons a { padding: 8px; border-radius: 8px; color: var(--primary); transition: color 0.15s; }
+  .social-icons a:hover { color: var(--accent); }
+  .social-icons svg { width: 26px; height: 26px; }
+
+  /* Sections */
+  .section { margin-top: 68px; scroll-margin-top: 84px; }
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    margin-bottom: 20px;
+  }
+  .section-head h2 { font-size: 26px; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; }
+  .view-all { font-size: 15px; color: var(--secondary); white-space: nowrap; }
+  .view-all:hover { color: var(--accent-ink); }
+
+  /* Cards (publication, projects) */
+  .cards { display: grid; gap: 16px; list-style: none; }
+  .card {
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--gap);
+  }
+  .card-pub { border-left: 4px solid var(--accent); }
+  .card-kind { font-size: 13px; color: var(--secondary); margin-bottom: 6px; }
+  .card h3 { font-size: 21px; line-height: 1.35; font-weight: 700; }
+  .card-authors { font-size: 15px; color: var(--secondary); margin-top: 8px; }
+  .card-authors strong { color: var(--primary); font-weight: 600; }
+  .card-desc { font-size: 15px; line-height: 1.65; color: var(--secondary); margin-top: 10px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; list-style: none; }
+  .tags li {
+    font-size: 13px; line-height: 1.5; padding: 2px 9px; border-radius: 4px;
+    background: var(--accent-soft); color: var(--primary);
+  }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font: inherit; font-size: 14px; line-height: 1.4;
+    padding: 6px 12px; border: 1px solid var(--tertiary); border-radius: 6px;
+    background: transparent; color: var(--primary); cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn svg { width: 14px; height: 14px; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 500; }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .copy-status { font-size: 13px; color: var(--secondary); }
+
+  /* Timeline (experience, education, leadership) */
+  .timeline {
+    list-style: none; position: relative;
+    margin-left: 6px; padding-left: 26px;
+    border-left: 2px solid var(--border);
+  }
+  .tl-item { position: relative; padding-bottom: 28px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before {
+    content: ""; position: absolute; left: -34px; top: 6px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--theme); border: 2px solid var(--tertiary);
+  }
+  .tl-item.now::before { background: var(--accent); border-color: var(--accent); }
+  .tl-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; }
+  .tl-title { font-size: 18px; line-height: 1.4; font-weight: 600; }
+  .tl-date { font-size: 14px; color: var(--secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tl-org { font-size: 15px; color: var(--secondary); margin-top: 2px; }
+  .tl-desc { list-style: none; margin-top: 8px; display: grid; gap: 4px; }
+  .tl-desc li { position: relative; padding-left: 16px; font-size: 15px; line-height: 1.6; color: var(--content); }
+  .tl-desc li::before { content: "–"; position: absolute; left: 0; color: var(--secondary); }
+
+  /* Achievements */
+  .awards { list-style: none; border-top: 1px solid var(--border); }
+  .award {
+    display: grid; grid-template-columns: 76px 1fr; gap: 16px;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .award-year { font-size: 14px; color: var(--secondary); font-variant-numeric: tabular-nums; padding-top: 2px; }
+  .award-title { font-size: 16px; line-height: 1.45; font-weight: 600; }
+  .award-detail { font-size: 14.5px; line-height: 1.55; color: var(--secondary); margin-top: 2px; }
+
+  /* Skills */
+  .facts { display: grid; grid-template-columns: 150px 1fr; gap: 14px 20px; font-size: 16px; }
+  .facts dt { font-weight: 600; }
+  .facts dd { color: var(--content); }
+
+  /* Footer */
+  .footer {
+    max-width: calc(var(--main-width) + var(--gap) * 2);
+    margin: 80px auto 0; padding: 24px var(--gap) 44px;
+    font-size: 13px; color: var(--secondary); text-align: center;
+  }
+  .footer-inner { border-top: 1px solid var(--border); padding-top: 24px; }
+  .footer a { border-bottom: 1px solid var(--tertiary); }
+  .footer a:hover { color: var(--accent-ink); border-bottom-color: var(--accent); }
+
+  .top-link {
+    position: fixed; right: 24px; bottom: 28px; z-index: 40;
+    display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%;
+    background: var(--tertiary); color: var(--primary);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s, background-color 0.15s;
+  }
+  .top-link.show { opacity: 1; visibility: visible; }
+  .top-link:hover { background: var(--accent); color: var(--on-accent); }
+  .top-link svg { width: 16px; height: 16px; }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  @media (max-width: 820px) {
+    .nav { padding-top: 8px; }
+    .menu {
+      width: calc(100% + var(--gap) * 2);
+      margin: 0 calc(var(--gap) * -1);
+      padding: 0 var(--gap) 10px;
+      gap: 20px;
+    }
+    .section { scroll-margin-top: 116px; }
+  }
+  @media (max-width: 600px) {
+    :root { --gap: 18px; }
+    body { font-size: 17px; }
+    .home-info { padding-top: 32px; }
+    .home-info h1 { font-size: 34px; }
+    .section { margin-top: 56px; }
+    .section-head h2 { font-size: 23px; }
+    .card h3 { font-size: 19px; }
+    .award { grid-template-columns: 1fr; gap: 2px; }
+    .facts { grid-template-columns: 1fr; gap: 2px; }
+    .facts dd { margin-bottom: 12px; }
+    .top-link { right: 16px; bottom: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="header" id="header">
+  <nav class="nav" aria-label="Main">
+    <div class="logo">
+      <a class="logo-link" href="#top">Max Pratueangsukpong</a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+    <ul class="menu" id="menu">
+      <li><a href="#publication">Publication</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#leadership">Leadership</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="main" id="main">
+
+  <!-- Welcome -->
+  <section class="home-info" aria-labelledby="welcome-h">
+    <h1 id="welcome-h">Welcome</h1>
+    <div class="home-content">
+      <p>Hi! 👋 I'm Max (Narawit Pratueangsukpong), an MRes student in Sensor Technologies and Applications at the University of Cambridge. Before that I read Natural Sciences at Trinity College, graduating with First Class Honours in Chemistry.</p>
+      <ul>
+        <li><strong>Interests:</strong> using code to push drug discovery and protein design forward, computational biophysics, and the business side of the life sciences.</li>
+        <li><strong>Right now:</strong> starting my MRes on the Trinity–Prince Mahidol Studentship, and leading Life Sciences &amp; Deep Tech at the Cambridge University VC &amp; PE Society.</li>
+        <li><strong>Off the clock:</strong> half-marathons, and badminton for the Trinity College team.</li>
+      </ul>
+    </div>
+    <div class="social-icons">
+      <a href="Narawit_Pratueangsukpong_CV.pdf" target="_blank" rel="noopener" title="CV" aria-label="CV (PDF)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </a>
+      <a href="https://github.com/max-prat" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/max-prat/" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:narawit.pra@gmail.com" title="Email" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Publication -->
+  <section class="section" id="publication" aria-labelledby="publication-h">
+    <div class="section-head">
+      <h2 id="publication-h">Publication</h2>
+    </div>
+    <article class="card card-pub">
+      <p class="card-kind">Preprint · bioRxiv · 2024 · Biophysics</p>
+      <h3>Computational modelling of specific serotonin reuptake inhibitor inhibition on the TREK-2 channel</h3>
+      <p class="card-authors"><strong>Narawit Pratueangsukpong</strong>, Tanadet Pipatpolkai</p>
+      <p class="card-desc">Using molecular dynamics simulations, we showed that the antidepressants fluoxetine and escitalopram bind the same pocket on TREK-2, a mechanosensitive potassium channel, yet inhibit it in different ways. Fluoxetine acts through the surrounding POPC lipid and disrupts gating at the selectivity filter, while escitalopram behaves as a conventional pore blocker.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://doi.org/10.1101/2024.05.01.592054" target="_blank" rel="noopener">Read preprint</a>
+        <a class="btn" href="https://www.biorxiv.org/content/10.1101/2024.05.01.592054.full.pdf" target="_blank" rel="noopener">PDF</a>
+        <a class="btn" href="https://doi.org/10.5281/zenodo.15202282" target="_blank" rel="noopener">Simulation data</a>
+        <button class="btn" type="button" id="copy-cite">Copy citation</button>
+        <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+      </div>
+    </article>
+  </section>
+
+  <!-- Projects -->
+  <section class="section" id="projects" aria-labelledby="projects-h">
+    <div class="section-head">
+      <h2 id="projects-h">Projects</h2>
+      <a class="view-all" href="https://github.com/max-prat" target="_blank" rel="noopener">GitHub →</a>
+    </div>
+    <ul class="cards">
+      <li class="card">
+        <p class="card-kind">Machine learning · CN Bio · 2026</p>
+        <h3>Predicting drug-induced liver injury from organ-on-chip data</h3>
+        <p class="card-desc">Trained machine learning models in Python to predict a drug's risk of liver injury from organ-on-chip experiments, keeping the results interpretable for scientists and clients. The best model now runs as a web app, so anyone can make predictions without writing code.</p>
+        <ul class="tags"><li>Python</li><li>Machine learning</li><li>Interpretability</li><li>Web app</li></ul>
+      </li>
+      <li class="card">
+        <p class="card-kind">Machine learning · Brain Code Camp Thailand · 2023</p>
+        <h3>Detecting mild cognitive impairment from clock drawings</h3>
+        <p class="card-desc">Treated the clock-drawing test, a common cognitive screen, as a time series and trained classifiers to flag mild cognitive impairment. Presented at Brain Code Camp Thailand 2023.</p>
+        <ul class="tags"><li>Python</li><li>Jupyter</li><li>Time-series classification</li></ul>
+        <div class="actions">
+          <a class="btn" href="https://github.com/max-prat/BCC_MCI_timeseries_for_clockdrawing" target="_blank" rel="noopener">View code</a>
+        </div>
+      </li>
+      <li class="card">
+        <p class="card-kind">Quantitative research · Redington · 2025</p>
+        <h3>What drives the equity–bond correlation?</h3>
+        <p class="card-desc">Built a linear model of how inflation and interest rates drive the correlation between equity and bond returns, explaining 81% of its variation. Also wrote a report for Managing Directors on Bitcoin, showing that a 5% allocation maximised the portfolio's Sharpe ratio.</p>
+        <ul class="tags"><li>Regression</li><li>Portfolio construction</li><li>Macro</li></ul>
+      </li>
+      <li class="card">
+        <p class="card-kind">Automation · Boston Consulting Group · 2025</p>
+        <h3>Benchmarking 11,000+ SKUs for a pricing project</h3>
+        <p class="card-desc">Compared a consumer goods client's portfolio against its major competitor across more than 11,000 SKUs, then automated the analysis workflow in Python to cut processing time by over 80%.</p>
+        <ul class="tags"><li>Python</li><li>Pricing</li><li>Data analysis</li></ul>
+      </li>
+      <li class="card">
+        <p class="card-kind">Side project</p>
+        <h3>cambridge-crush</h3>
+        <p class="card-desc">A matchmaking site for Cambridge students, built on the theory that dating apps don't quite work for overachieving Cantabs.</p>
+        <ul class="tags"><li>HTML</li><li>Web</li></ul>
+        <div class="actions">
+          <a class="btn" href="https://github.com/max-prat/cambridge-crush" target="_blank" rel="noopener">View code</a>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Experience -->
+  <section class="section" id="experience" aria-labelledby="experience-h">
+    <div class="section-head">
+      <h2 id="experience-h">Experience</h2>
+      <a class="view-all" href="Narawit_Pratueangsukpong_CV.pdf" target="_blank" rel="noopener">Full CV →</a>
+    </div>
+    <ol class="timeline">
+      <li class="tl-item">
+        <div class="tl-top"><h3 class="tl-title">Machine Learning Intern</h3><span class="tl-date">Jun – Aug 2026</span></div>
+        <p class="tl-org">CN Bio Innovations, Cambridge, UK</p>
+        <ul class="tl-desc">
+          <li>Trained interpretable models predicting drug-induced liver injury risk from organ-on-chip data.</li>
+          <li>Deployed the best model as a web app so scientists and clients can run predictions without coding.</li>
+        </ul>
+      </li>
+      <li class="tl-item">
+        <div class="tl-top"><h3 class="tl-title">Case Team Assistant</h3><span class="tl-date">Aug – Sep 2025</span></div>
+        <p class="tl-org">Boston Consulting Group, Bangkok, Thailand</p>
+        <ul class="tl-desc">
+          <li>Benchmarked a client's consumer goods portfolio against its major competitor across 11,000+ SKUs for a pricing project.</li>
+          <li>Automated the analysis workflow in Python, cutting processing time by over 80%.</li>
+        </ul>
+      </li>
+      <li class="tl-item">
+        <div class="tl-top"><h3 class="tl-title">Asset-Liability Management Intern</h3><span class="tl-date">Jul – Aug 2025</span></div>
+        <p class="tl-org">Redington, a Gallagher company, London, UK</p>
+        <ul class="tl-desc">
+          <li>Researched how inflation and interest rates drive equity–bond return correlation for an investment consultancy advising pension schemes; built a linear model explaining 81% of the variation.</li>
+          <li>Wrote a research report on Bitcoin allocation for Managing Directors, showing that a 5% allocation maximised the portfolio's Sharpe ratio.</li>
+        </ul>
+      </li>
+      <li class="tl-item">
+        <div class="tl-top"><h3 class="tl-title">Consultant</h3><span class="tl-date">Oct 2024 – Apr 2026</span></div>
+        <p class="tl-org">Cambridge Consulting Network, Cambridge, UK</p>
+        <ul class="tl-desc">
+          <li>Advised a biotech client on the market landscape and go-to-market strategy for a novel psychedelic therapeutic, positioned as a third-line treatment for schizophrenia.</li>
+          <li>Screened US states on cost, talent, market access, regulation and risk; shortlisted two states and the two highest-potential sites in each.</li>
+        </ul>
+      </li>
+      <li class="tl-item">
+        <div class="tl-top"><h3 class="tl-title">Market Analyst</h3><span class="tl-date">Nov 2023 – Apr 2024</span></div>
+        <p class="tl-org">MedTech Innovation Programme, Cambridge, UK</p>
+        <ul class="tl-desc">
+          <li>Translated surgeon feedback into design requirements and aligned engineers and investors around them.</li>
+          <li>Sized the global market at £98M and the obtainable market at £12M, and led competitor analysis for the device.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Education -->
+  <section class="section" id="education" aria-labelledby="education-h">
+    <div class="section-head">
+      <h2 id="education-h">Education</h2>
+    </div>
+    <ol class="timeline">
+      <li class="tl-item now">
+        <div class="tl-top"><h3 class="tl-title">MRes Sensor Technologies and Applications</h3><span class="tl-date">2026 – 2027</span></div>
+        <p class="tl-org">University of Cambridge</p>
+        <ul class="tl-desc">
+          <li>Fully funded by the Trinity–Prince Mahidol Studentship, awarded to one student every three years.</li>
+          <li>Coursework in Machine Learning, Principles of Sensing and Innovation Management, plus two research projects.</li>
+        </ul>
+      </li>
+      <li class="tl-item">
+        <div class="tl-top"><h3 class="tl-title">MSci &amp; BA (Hons) Natural Sciences</h3><span class="tl-date">2022 – 2026</span></div>
+        <p class="tl-org">University of Cambridge, Trinity College</p>
+        <ul class="tl-desc">
+          <li>Chemistry with Biochemistry &amp; Mathematics. First Class Honours.</li>
+          <li>Senior Scholar, Trinity College (2024–26), and Jardine Undergraduate Scholar (full tuition and maintenance).</li>
+        </ul>
+      </li>
+      <li class="tl-item">
+        <div class="tl-top"><h3 class="tl-title">Kamnoetvidya Science Academy</h3><span class="tl-date">2019 – 2022</span></div>
+        <p class="tl-org">Thailand</p>
+        <ul class="tl-desc">
+          <li>A-levels A*A*A* (Maths, Chemistry, Biology); GPA 4.00/4.00.</li>
+          <li>National representative and finalist at ISEF; bronze medal at the Asia Pacific Linguistics Olympiad.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Leadership -->
+  <section class="section" id="leadership" aria-labelledby="leadership-h">
+    <div class="section-head">
+      <h2 id="leadership-h">Leadership</h2>
+    </div>
+    <ol class="timeline">
+      <li class="tl-item now">
+        <div class="tl-top"><h3 class="tl-title">Head of Life Sciences and Deep Tech</h3><span class="tl-date">Aug 2026 – present</span></div>
+        <p class="tl-org">Cambridge University Venture Capital and Private Equity Society</p>
+        <ul class="tl-desc">
+          <li>Organising talks from VC funds so postgraduate students can learn about entrepreneurship and fundraising.</li>
+        </ul>
+      </li>
+      <li class="tl-item now">
+        <div class="tl-top"><h3 class="tl-title">Co-President</h3><span class="tl-date">Jan 2026 – present</span></div>
+        <p class="tl-org">Cambridge University Chemical Society</p>
+        <ul class="tl-desc">
+          <li>Relaunched the society, growing membership to 120+ and running six events with speakers from startups, pharma and life-sciences consultancies.</li>
+        </ul>
+      </li>
+      <li class="tl-item now">
+        <div class="tl-top"><h3 class="tl-title">Alumni Officer, Treasurer</h3><span class="tl-date">Jan – Dec 2023, Jan 2026 – present</span></div>
+        <p class="tl-org">Jardine Scholar Council</p>
+        <ul class="tl-desc">
+          <li>Managed a £6k budget for a society of 65+ members, and organised an alumni mentoring programme and an in-person networking event.</li>
+        </ul>
+      </li>
+      <li class="tl-item">
+        <div class="tl-top"><h3 class="tl-title">President</h3><span class="tl-date">Apr 2023 – Mar 2024</span></div>
+        <p class="tl-org">Cambridge University Thai Society</p>
+        <ul class="tl-desc">
+          <li>Directed strategic planning and financial management for a society of 80+ members.</li>
+          <li>Built partnerships with the Chinese, Malaysian and Singaporean societies and hosted joint events.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Achievements -->
+  <section class="section" id="achievements" aria-labelledby="achievements-h">
+    <div class="section-head">
+      <h2 id="achievements-h">Achievements</h2>
+    </div>
+    <ul class="awards">
+      <li class="award">
+        <span class="award-year">2026</span>
+        <div>
+          <p class="award-title">Trinity–Prince Mahidol Studentship</p>
+          <p class="award-detail">Full funding for the MRes at Cambridge, awarded to one student every three years.</p>
+        </div>
+      </li>
+      <li class="award">
+        <span class="award-year">2026</span>
+        <div>
+          <p class="award-title">4th place, UCL Consulting Summit National Case Competition</p>
+          <p class="award-detail">Presented a strategic plan for bringing AI tools into the UK's education system.</p>
+        </div>
+      </li>
+      <li class="award">
+        <span class="award-year">2024</span>
+        <div>
+          <p class="award-title">Winner, Lucy Cavendish College Enterprise Challenge</p>
+          <p class="award-detail">Pitched a new medical technology tool for remote surgery and won £15k in equity investment.</p>
+        </div>
+      </li>
+      <li class="award">
+        <span class="award-year">2024–26</span>
+        <div>
+          <p class="award-title">Senior Scholar, Trinity College, Cambridge</p>
+        </div>
+      </li>
+      <li class="award">
+        <span class="award-year">2022–26</span>
+        <div>
+          <p class="award-title">Jardine Undergraduate Scholarship</p>
+          <p class="award-detail">Full tuition and maintenance; a merit-based award given each year to 10 scholars from East and Southeast Asia.</p>
+        </div>
+      </li>
+      <li class="award">
+        <span class="award-year">2019–22</span>
+        <div>
+          <p class="award-title">Finalist, International Science and Engineering Fair (ISEF)</p>
+          <p class="award-detail">National representative among 675 international participants at the largest high-school science competition in the world.</p>
+        </div>
+      </li>
+      <li class="award">
+        <span class="award-year">2019–22</span>
+        <div>
+          <p class="award-title">Bronze medal, Asia Pacific Linguistics Olympiad</p>
+          <p class="award-detail">Decoded problems in unseen languages under time pressure.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Skills -->
+  <section class="section" id="skills" aria-labelledby="skills-h">
+    <div class="section-head">
+      <h2 id="skills-h">Skills &amp; interests</h2>
+    </div>
+    <dl class="facts">
+      <dt>Languages</dt>
+      <dd>Thai (native), English (full professional proficiency), Mandarin Chinese (B1)</dd>
+      <dt>Tools</dt>
+      <dd>Python, MATLAB, Microsoft Excel, PowerPoint and Word</dd>
+      <dt>Outside work</dt>
+      <dd>Long-distance running (half-marathon finisher) and badminton for the Trinity College team</dd>
+    </dl>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    © <span id="year">2026</span> Narawit (Max) Pratueangsukpong · Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+  </div>
+</footer>
+
+<a class="top-link" id="top-link" href="#top" aria-label="Back to top" title="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+</a>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+
+    // Theme toggle
+    var toggle = document.getElementById("theme-toggle");
+    var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+    function currentTheme() {
+      var set = root.getAttribute("data-theme");
+      if (set) return set;
+      return mq && mq.matches ? "dark" : "light";
+    }
+    function updateToggleLabel() {
+      toggle.setAttribute("aria-label", currentTheme() === "dark" ? "Switch to light theme" : "Switch to dark theme");
+    }
+    toggle.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("pref-theme", next); } catch (e) {}
+      updateToggleLabel();
+    });
+    updateToggleLabel();
+
+    // Header border and back-to-top button
+    var header = document.getElementById("header");
+    var topLink = document.getElementById("top-link");
+    function onScroll() {
+      var y = window.scrollY || window.pageYOffset;
+      header.classList.toggle("scrolled", y > 8);
+      topLink.classList.toggle("show", y > 700);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    // Highlight the section currently in view
+    var menu = document.getElementById("menu");
+    var links = Array.prototype.slice.call(menu.querySelectorAll("a"));
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    function setActive(id) {
+      links.forEach(function (a) {
+        var on = a === byId[id];
+        a.classList.toggle("active", on);
+        if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+      });
+      var link = byId[id];
+      if (link && menu.scrollWidth > menu.clientWidth) {
+        menu.scrollTo({ left: Math.max(0, link.offsetLeft - 24), behavior: "smooth" });
+      }
+    }
+    if ("IntersectionObserver" in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      }, { rootMargin: "-35% 0px -60% 0px" });
+      document.querySelectorAll("main section[id]").forEach(function (s) { observer.observe(s); });
+    }
+
+    // Copy citation
+    var citation = "Pratueangsukpong, N. & Pipatpolkai, T. (2024). Computational modelling of specific serotonin reuptake inhibitor inhibition on the TREK-2 channel. bioRxiv 2024.05.01.592054. https://doi.org/10.1101/2024.05.01.592054";
+    var copyBtn = document.getElementById("copy-cite");
+    var copyStatus = document.getElementById("copy-status");
+    var clearTimer;
+    function showStatus(msg) {
+      copyStatus.textContent = msg;
+      clearTimeout(clearTimer);
+      clearTimer = setTimeout(function () { copyStatus.textContent = ""; }, 2500);
+    }
+    function fallbackCopy() {
+      var ta = document.createElement("textarea");
+      ta.value = citation;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      showStatus(ok ? "Citation copied" : "Copy failed. Select the DOI link instead.");
+    }
+    copyBtn.addEventListener("click", function () {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(citation).then(function () { showStatus("Citation copied"); }, fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  })();
+</script>
+</body>
+</html>
